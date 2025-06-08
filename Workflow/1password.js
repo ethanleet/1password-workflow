@@ -142,6 +142,10 @@ function getItems(userID, excludedVaults) {
     // Vault name
     const vaultName = vaults.find(vault => vault["id"] === vaultID)["name"]
 
+    // Username, credit card number (partially redacted), etc.
+    // WARNING: This info can be sensitive
+    const additionalInfo = item["additional_information"]
+
     // Format when no URLs
     if (item["urls"] === undefined) {
       const itemVars = {
@@ -155,7 +159,7 @@ function getItems(userID, excludedVaults) {
       return {
         uid: item["id"],
         title: item["title"],
-        subtitle: `${vaultName} 𐄁 ${accountURL}`,
+        subtitle: `${additionalInfo} 𐄁 ${vaultName}`,
         mods: modifiers,
         variables: Object.assign({ action: modifiers["none"]["variables"]["action"] }, itemVars)
       }
@@ -180,7 +184,7 @@ function getItems(userID, excludedVaults) {
         variables: { action: modifiers["none"] },
         uid: item["id"],
         title: item["title"],
-        subtitle: `${displayURL} 𐄁 ${vaultName} 𐄁 ${accountURL}`,
+        subtitle: `${additionalInfo} 𐄁 ${vaultName} 𐄁 ${displayURL}`,
         match: `${item["title"]} ${displayURL} ${item["category"]} ${item["tags"]?.join(" ")}`,
         mods: modifiers,
         variables: Object.assign({ action: modifiers["none"]["variables"]["action"] }, itemVars)
